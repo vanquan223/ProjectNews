@@ -7,7 +7,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,7 @@ import vn.vnpt.vanquan223.projectnews.network.APIManager;
 
 public class RecyclerViewActivity extends AppCompatActivity implements RecyclerViewAdapter.IRegisterClick {
     RecyclerView rvRecyclerList;
+//    WebView wvNews;
     List<ListNewsModel> listNewsModels = new ArrayList<>();
     RecyclerViewAdapter adapter;
     private DatabaseHelper db;
@@ -34,6 +39,8 @@ public class RecyclerViewActivity extends AppCompatActivity implements RecyclerV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view);
         rvRecyclerList = findViewById(R.id.rvRecyclerList);
+//        wvNews = findViewById(R.id.wvNews);
+
         db = new DatabaseHelper(this);
 
         parserRecyclerView();
@@ -80,6 +87,20 @@ public class RecyclerViewActivity extends AppCompatActivity implements RecyclerV
 
     @Override
     public void onClickItem(int position) {
+        ListNewsModel listNewsModel = listNewsModels.get(position);
+        if (listNewsModel.getContent() != null && !listNewsModel.getContent().getRendered().equals("")) {
+            Intent intent = new Intent(this, WebViewActivity.class);
+            intent.putExtra("CONTENT", listNewsModel.getContent().getRendered());
+            startActivity(intent);
+            /*wvNews.setVisibility(View.VISIBLE);
+            wvNews.setWebViewClient(new WebViewClient());
+            wvNews.getSettings().setLoadsImagesAutomatically(true);
+            wvNews.getSettings().setJavaScriptEnabled(true);
+            wvNews.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            wvNews.loadData(listNewsModel.getContent().getRendered(), "text/html", "UTF-8");*/
+        }else {
+            Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_LONG).show();
+        }
         Log.d("LOG", "onClickItem: " + position);
     }
 
