@@ -50,6 +50,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         NewHolder newHolder = (NewHolder) holder;
         ListNewsModel model = listNewsModels.get(position);
+
+        if (model.isBookMark() == false)
+            newHolder.btBookmark.setBackgroundResource(R.drawable.ic_bookmark);
+        else
+            newHolder.btBookmark.setBackgroundResource(R.drawable.ic_bookmark_filled);
+
         newHolder.tvDate.setText(model.getDate());
         if (model.getTitle() != null)
             newHolder.tvTitle.setText(Html.fromHtml(model.getTitle().getRendered()));

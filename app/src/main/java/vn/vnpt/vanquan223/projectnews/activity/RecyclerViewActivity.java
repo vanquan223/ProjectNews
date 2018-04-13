@@ -1,6 +1,7 @@
 package vn.vnpt.vanquan223.projectnews.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,6 +63,11 @@ public class RecyclerViewActivity extends AppCompatActivity implements RecyclerV
             @Override
             public void onResponse(Call<List<ListNewsModel>> call, Response<List<ListNewsModel>> response) {
                 listNewsModels = response.body();
+
+                for (ListNewsModel list : listNewsModels) {
+                    list.setBookMark(db.checkBookMark(list));
+                }
+
                 adapter.reloadData(listNewsModels);
             }
 
@@ -80,11 +86,11 @@ public class RecyclerViewActivity extends AppCompatActivity implements RecyclerV
     @Override
     public void onClickBookMark(int position) {
         ListNewsModel listNewsModel = listNewsModels.get(position);
-        if (!db.checkBookMark(listNewsModel)){
+        if (!db.checkBookMark(listNewsModel)) {
             listNewsModel.setBookMark(true);
             db.insertDB(listNewsModel);
             adapter.reloadData(listNewsModels);
-        }else {
+        } else {
             //delete
             listNewsModel.setBookMark(false);
             db.deleteBookmark(listNewsModel.getId());
@@ -94,9 +100,17 @@ public class RecyclerViewActivity extends AppCompatActivity implements RecyclerV
     }
 
 
-
     @Override
     public void onClickShare(int position) {
+        ListNewsModel listNewsModel = listNewsModels.get(position);
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareSubject = (listNewsModel.getTitle() != null)?listNewsModel.getTitle().getRendered():"shareSubject";
+        String shareBody = (listNewsModel.getExcerpt() != null)?listNewsModel.getExcerpt().getRendered():"shareBody";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareSubject);
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share Item"));
+
         Log.d("LOG", "onClickItem: " + position);
     }
 }
