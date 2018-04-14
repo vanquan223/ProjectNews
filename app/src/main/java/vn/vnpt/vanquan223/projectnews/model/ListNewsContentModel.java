@@ -7,6 +7,10 @@ public class ListNewsContentModel {
         this.rendered = rendered;
     }
 
+    public ListNewsContentModel() {
+
+    }
+
     public String getRendered() {
         return rendered;
     }

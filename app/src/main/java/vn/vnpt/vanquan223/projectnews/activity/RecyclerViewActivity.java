@@ -29,7 +29,6 @@ import vn.vnpt.vanquan223.projectnews.network.APIManager;
 
 public class RecyclerViewActivity extends AppCompatActivity implements RecyclerViewAdapter.IRegisterClick {
     RecyclerView rvRecyclerList;
-//    WebView wvNews;
     List<ListNewsModel> listNewsModels = new ArrayList<>();
     RecyclerViewAdapter adapter;
     private DatabaseHelper db;
@@ -39,7 +38,6 @@ public class RecyclerViewActivity extends AppCompatActivity implements RecyclerV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view);
         rvRecyclerList = findViewById(R.id.rvRecyclerList);
-//        wvNews = findViewById(R.id.wvNews);
 
         db = new DatabaseHelper(this);
 

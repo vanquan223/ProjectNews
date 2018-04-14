@@ -9,7 +9,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import vn.vnpt.vanquan223.projectnews.model.ListNewExcerptModel;
+import vn.vnpt.vanquan223.projectnews.model.ListNewTitleModel;
+import vn.vnpt.vanquan223.projectnews.model.ListNewsContentModel;
 import vn.vnpt.vanquan223.projectnews.model.ListNewsDBModel;
+import vn.vnpt.vanquan223.projectnews.model.ListNewsImageModel;
 import vn.vnpt.vanquan223.projectnews.model.ListNewsModel;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -56,26 +60,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        }
     }
 
-    public List<ListNewsDBModel> selectAllNews() {
-        List<ListNewsDBModel> lists = new ArrayList<>();
+    public List<ListNewsModel> selectAllNews() {
+        List<ListNewsModel> lists = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "Select * from " + TABLE_NEWS;
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             do {
-                ListNewsDBModel list = new ListNewsDBModel(
-                        /*cursor.getString(cursor.getColumnIndex(BOOKMARK.date)),
-                        cursor.getString(cursor.getColumnIndex(BOOKMARK.title)),
-                        cursor.getString(cursor.getColumnIndex(BOOKMARK.excerpt)),
-                        cursor.getString(cursor.getColumnIndex(BOOKMARK.image)),
-                        cursor.getString(cursor.getColumnIndex(BOOKMARK.content))*/
-                );
+                ListNewsModel list = new ListNewsModel();
+                list.setId(cursor.getInt(cursor.getColumnIndex(BOOKMARK.id)));
                 list.setDate(cursor.getString(cursor.getColumnIndex(BOOKMARK.date)));
-                list.setTitle(cursor.getString(cursor.getColumnIndex(BOOKMARK.title)));
-                list.setExcerpt(cursor.getString(cursor.getColumnIndex(BOOKMARK.excerpt)));
-                list.setImage(cursor.getString(cursor.getColumnIndex(BOOKMARK.image)));
-                list.setContent(cursor.getString(cursor.getColumnIndex(BOOKMARK.content)));
+
+                ListNewTitleModel titleModel = new ListNewTitleModel();
+                titleModel.setRendered(cursor.getString(cursor.getColumnIndex(BOOKMARK.title)));
+                list.setTitle(titleModel);
+
+                ListNewExcerptModel excerptModel = new ListNewExcerptModel();
+                excerptModel.setRendered(cursor.getString(cursor.getColumnIndex(BOOKMARK.excerpt)));
+                list.setExcerpt(excerptModel);
+
+                ListNewsImageModel imageModel = new ListNewsImageModel();
+                imageModel.setSource_url(cursor.getString(cursor.getColumnIndex(BOOKMARK.image)));
+                list.setBetter_featured_image(imageModel);
+
+                ListNewsContentModel contentModel = new ListNewsContentModel();
+                contentModel.setRendered(cursor.getString(cursor.getColumnIndex(BOOKMARK.content)));
+                list.setContent(contentModel);
+
                 lists.add(list);
             } while (cursor.moveToNext());
         }

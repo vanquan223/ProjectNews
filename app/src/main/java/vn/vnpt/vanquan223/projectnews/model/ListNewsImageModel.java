@@ -7,6 +7,10 @@ public class ListNewsImageModel {
         this.source_url = source_url;
     }
 
+    public ListNewsImageModel() {
+
+    }
+
     public String getSource_url() {
         return source_url;
     }

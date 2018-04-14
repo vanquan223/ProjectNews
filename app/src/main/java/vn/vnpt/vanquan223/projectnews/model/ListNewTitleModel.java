@@ -7,6 +7,10 @@ public class ListNewTitleModel {
         this.rendered = rendered;
     }
 
+    public ListNewTitleModel() {
+
+    }
+
     public String getRendered() {
         return rendered;
     }

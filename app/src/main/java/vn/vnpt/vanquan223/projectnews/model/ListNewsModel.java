@@ -20,6 +20,10 @@ public class ListNewsModel {
         this.isBookMark = isBookMark;
     }
 
+    public ListNewsModel() {
+
+    }
+
     public int getId() {
         return id;
     }

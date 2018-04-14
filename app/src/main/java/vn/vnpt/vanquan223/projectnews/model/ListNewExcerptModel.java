@@ -7,6 +7,10 @@ public class ListNewExcerptModel {
         this.rendered = rendered;
     }
 
+    public ListNewExcerptModel() {
+
+    }
+
     public String getRendered() {
         return rendered;
     }
